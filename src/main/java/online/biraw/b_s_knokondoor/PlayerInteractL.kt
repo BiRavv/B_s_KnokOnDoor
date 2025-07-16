@@ -21,7 +21,8 @@ class PlayerInteractL : Listener {
         val player = event.player
         
 
-        if (event.action == Action.LEFT_CLICK_BLOCK && (player.inventory.itemInMainHand.isEmpty || B_s_KnockOnDoor.can_knock_with_tool)) {
+        if (event.action == Action.LEFT_CLICK_BLOCK && player.isSneaking && (player.inventory.itemInMainHand.isEmpty || B_s_KnockOnDoor.can_knock_with_tool)) {
+
             val blockType = event.clickedBlock?.type ?: return
             val location = event.clickedBlock!!.location
 
@@ -53,6 +54,27 @@ class PlayerInteractL : Listener {
                         Play(location, Sound.BLOCK_COPPER_PLACE, 6f, 0.5f)
                     }
                 else -> {}
+            }
+
+            if (B_s_KnockOnDoor.can_knock_on_windows) {
+                when (blockType) {
+                    Material.TINTED_GLASS, Material.LIGHT_BLUE_STAINED_GLASS, Material.BLUE_STAINED_GLASS,
+                    Material.GRAY_STAINED_GLASS, Material.GREEN_STAINED_GLASS, Material.RED_STAINED_GLASS,
+                    Material.YELLOW_STAINED_GLASS, Material.CYAN_STAINED_GLASS, Material.LIME_STAINED_GLASS,
+                    Material.PINK_STAINED_GLASS, Material.PURPLE_STAINED_GLASS, Material.BLACK_STAINED_GLASS,
+                    Material.BROWN_STAINED_GLASS, Material.WHITE_STAINED_GLASS, Material.ORANGE_STAINED_GLASS,
+                    Material.MAGENTA_STAINED_GLASS, Material.LIGHT_GRAY_STAINED_GLASS,
+                    Material.GLASS -> Play(location, Sound.BLOCK_BONE_BLOCK_BREAK, 10f, 0.5f)
+
+                    Material.GLASS_PANE, Material.RED_STAINED_GLASS_PANE, Material.LIGHT_BLUE_STAINED_GLASS_PANE,
+                    Material.BLUE_STAINED_GLASS_PANE, Material.GRAY_STAINED_GLASS_PANE, Material.GREEN_STAINED_GLASS_PANE,
+                    Material.CYAN_STAINED_GLASS_PANE, Material.LIGHT_GRAY_STAINED_GLASS_PANE, Material.PINK_STAINED_GLASS_PANE,
+                    Material.LIME_STAINED_GLASS_PANE, Material.BROWN_STAINED_GLASS_PANE, Material.PURPLE_STAINED_GLASS_PANE,
+                    Material.BLACK_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE, Material.MAGENTA_STAINED_GLASS_PANE,
+                    Material.ORANGE_STAINED_GLASS_PANE, Material.YELLOW_STAINED_GLASS_PANE -> Play(location, Sound.BLOCK_COPPER_BREAK, 8f, 2f)
+
+                    else -> {}
+                }
             }
 
             if (B_s_KnockOnDoor.can_knock_on_trapdoor) {
