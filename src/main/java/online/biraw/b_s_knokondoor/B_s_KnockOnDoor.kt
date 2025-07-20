@@ -11,6 +11,7 @@ class B_s_KnockOnDoor : JavaPlugin() {
             private set
         var can_knock_with_tool: Boolean = true
         var can_knock_on_trapdoor: Boolean = false
+        var can_knock_on_windows: Boolean = true
     }
 
     override fun onEnable() {
@@ -26,6 +27,8 @@ class B_s_KnockOnDoor : JavaPlugin() {
             val config = YamlConfiguration.loadConfiguration(configFile)
             config.set("can_knock_on_trapdoor",true)
             config.setComments("can_knock_on_trapdoor", listOf("This determines whether you can knock on trapdoors."))
+            config.set("can_knock_on_windows", true)
+            config.setComments("can_knock_on_windows", listOf("This determines whether you can knock on windows."))
             config.set("can_knock_with_tool",false)
             config.setComments("can_knock_with_tool", listOf("If this set true, a player can knock with any item in hand.","If set false, a player can only knock if has nothing in the main hand."))
             config.save(configFile)
@@ -40,6 +43,13 @@ class B_s_KnockOnDoor : JavaPlugin() {
                 can_knock_on_trapdoor = config.getBoolean("can_knock_on_trapdoor")
             }
 
+            if (config.contains("can_knock_on_windows")) {
+                can_knock_on_windows = config.getBoolean("can_knock_on_windows")
+            } else {
+                logger.warning("'can_knock_on_windows' is not properly set in the config, so it's set to 'true' as default!")
+                config.set("can_knock_on_windows",true)
+                can_knock_on_windows = config.getBoolean("can_knock_on_windows")
+            }
 
             if (config.contains("can_knock_with_tool")) {
                 can_knock_with_tool = config.getBoolean("can_knock_with_tool")
